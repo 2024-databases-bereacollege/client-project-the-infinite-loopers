@@ -1,0 +1,113 @@
+/* Basic Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  gap: 40px; /* Adjust if necessary */
+}
+
+.admin-div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
+aside {
+  width: 200px; /* Adjust if more space is needed */
+  float: left;
+  border-right: 1px solid #ccc;
+  height: 100vh;
+}
+
+.admin-pic {
+  width: 50px;
+  border-radius: 50%;
+}
+
+.tables-div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+aside nav ul {
+  list-style: none;
+}
+
+aside nav ul li a {
+  display: block;
+  padding: 10px;
+  text-decoration: none;
+  color: black;
+  border-bottom: 1px solid #ccc;
+}
+
+main {
+  flex-grow: 1; /* Allows main to take up remaining space */
+  padding: 20px;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+header h1 {
+  margin-right: auto;
+}
+
+input[type="search"] {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+table {
+  width: 100%; /* Ensures table is full-width */
+  border-collapse: collapse;
+}
+
+table caption {
+  text-align: left;
+  font-size: 1.2em;
+  margin-bottom: 10px;
+}
+
+table thead {
+  background-color: #f9f9f9;
+}
+
+table th,
+table td {
+  text-align: left;
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+table th {
+  font-weight: bold;
+}
+
+table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+a {
+  color: #06c;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}

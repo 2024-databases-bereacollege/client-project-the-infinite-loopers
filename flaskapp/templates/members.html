@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Members</title>
+    <link rel="stylesheet" href="../static/members.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <aside>
+        <!-- Sidebar navigation -->
+        <nav>
+            <div class="admin-div">
+                <p>Admin Panel</p>
+                <img class="admin-pic" src="https://annemariesegal.com/wp-content/uploads/2017/04/adobestock_86346713-cropped-young-woman-in-suit.jpg?w=640">
+            </div>
+            <ul class="tables-div">
+                <li><a href="main">Chapters</a></li>
+                <li><a href="members">Members</a></li>
+                <li><a href="donations">Donations</a></li>
+                <li><a href="events">Events</a></li>
+            </ul>
+        </nav>
+    </aside>
+    <div class="member_table">
+        <div class="main-button-table">
+            <h1>Members</h1>
+            <div style="text-align: right;">
+                <button id="addMemberBtn" onclick="">Add New Member</button>
+            </div>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Member ID</th>
+                    <th>First Name</th>
+                    <th>Middle Name</th>
+                    <th>Last Name</th>
+                    <th>Phone Number</th>
+                    <th>Score</th>
+                    <th>Address</th>
+                    <th>Events Attended</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                    <!-- <th class="chapter-name">Chapter Name</th> -->
+                </tr>
+            </thead>
+            <tbody>
+                {% for member in members %}
+                <tr>
+                    <td>{{ member.memberid }}</td>
+                    <td>{{ member.firstname }}</td>
+                    <td>{{ member.middlename }}</td>
+                    <td>{{ member.lastname }}</td>
+                    <td>{{ member.phonenumber }}</td>
+                    <td>{{ member.score }}</td>
+                    <td>{{ member.memberaddress }}</td>
+                    <td>{{ member.numberofeventsattended }}</td>
+                    <td>{{ member.status }}</td>
+                    <td>
+                        <button data-member='{{ member|tojson|safe }}' onclick="openEditModal(this)">Edit</button>
+                    </td>
+                    <!-- <td>{{ member.chaptername}}</td> -->
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Edit Member Modal -->
+<div id="editMemberModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeEditModal()">&times;</span>
+        <form id="editMemberForm" method="post" action="/update_member">
+            <input type="hidden" id="edit_member_id" name="member_id">
+            <label for="edit_first_name">First Name:</label>
+            <input type="text" id="edit_first_name" name="first_name" required><br>
+            <label for="edit_middle_name">Middle Name:</label>
+            <input type="text" id="edit_middle_name" name="middle_name"><br>
+            <label for="edit_last_name">Last Name:</label>
+            <input type="text" id="edit_last_name" name="last_name" required><br>
+            <label for="edit_phone_number">Phone Number:</label>
+            <input type="text" id="edit_phone_number" name="phone_number" required><br>
+            <label for="edit_score">Score:</label>
+            <input type="number" id="edit_score" name="score" required><br>
+            <label for="edit_address">Address:</label>
+            <input type="text" id="edit_address" name="address" required><br>
+            <label for="edit_number_of_events_attended">Events Attended:</label>
+            <input type="number" id="edit_number_of_events_attended" name="number_of_events_attended" required><br>
+            <label for="edit_chapter_name">Chapter Name: </label>
+            <input type="text" id="edit_chapter_name" name="chapter_name" required><br>
+            <input type="submit" value="Update Member">
+        </form>
+    </div>
+</div>
+
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <form id="addMemberForm" method="post" action="/add_member">
+                <label for="first_name">First Name:</label>
+                <input type="text" id="first_name" name="first_name" required><br>
+                <label for="middle_name">Middle Name:</label>
+                <input type="text" id="middle_name" name="middle_name"><br>
+                <label for="last_name">Last Name:</label>
+                <input type="text" id="last_name" name="last_name" required><br>
+                <label for="phone_number">Phone Number:</label>
+                <input type="text" id="phone_number" name="phone_number" required><br>
+                <label for="score">Score:</label>
+                <input type="number" id="score" name="score" required><br>
+                <label for="address">Address:</label>
+                <input type="text" id="address" name="address" required><br>
+                <label for="number_of_events_attended">Events Attended:</label>
+                <input type="number" id="number_of_events_attended" name="number_of_events_attended" required><br>
+                <label for="chapter_name">Chapter Name: </label>
+                <input type="text" id="chapter_name" name="chapter_name" required><br>
+                <label for="chapter_name">Status: </label>
+                <input type="text" id="status" name="status"><br>
+                <input type="submit" value="Add Member">
+            </form>
+        </div>
+    </div>
+    <script>
+        // Handle the add member form submission
+        $(document).ready(function() {
+            $('#addMemberBtn').click(function() {
+                $('#myModal').show();
+            });
+    
+            $('#addMemberForm').on('submit', function(e) {
+                e.preventDefault(); // Prevent the default form submission
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'POST',
+                    data: $(this).serialize(), // Serialize the form data
+                    success: function(response) {
+                        alert('Member added successfully!');
+                        // You may want to add logic here to append the new member to the table
+                        // For example: $('table tbody').append(response.newMemberHtml);
+                        $('#myModal').hide(); // Close the modal
+                    },
+                    error: function(xhr, status, error) {
+                        alert("Error: " + xhr.responseText);
+                    }
+                });
+            });
+    
+            // Close the modal when clicking the close button
+            $('.close').click(function() {
+                $(this).closest('.modal').hide();
+            });
+    
+            // Close modal when clicking outside of it
+            window.onclick = function(event) {
+                if ($(event.target).is('.modal')) {
+                    $('.modal').hide();
+                }
+            };
+        });
+    
+        // Function to handle opening the edit modal with the member's current information
+        function openEditModal(button) {
+            var memberData = $(button).data('member');
+            var modal = $('#editMemberModal');
+    
+            if (modal.length > 0) {
+                $('#edit_member_id').val(memberData.memberid);
+                $('#edit_first_name').val(memberData.firstname);
+                $('#edit_middle_name').val(memberData.middlename || '');
+                $('#edit_last_name').val(memberData.lastname);
+                $('#edit_phone_number').val(memberData.phonenumber);
+                $('#edit_score').val(memberData.score);
+                $('#edit_address').val(memberData.memberaddress);
+                $('#edit_number_of_events_attended').val(memberData.numberofeventsattended);
+                $('#edit_chapter_name').val(memberData.chaptername || '');
+                $('#edit_status').val(memberData.status || '');
+    
+                modal.show();
+            } else {
+                console.error('Edit modal element not found');
+            }
+        }
+    
+        // Function to close the edit modal
+        function closeEditModal() {
+            $('#editMemberModal').hide();
+        }
+    </script>
+    
+  
+</body>
+
+</html>

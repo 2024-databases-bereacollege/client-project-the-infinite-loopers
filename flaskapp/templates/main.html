@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard</title>
+<link rel="stylesheet" href="../static/main.css">
+</head>
+<body>
+
+<aside>
+  <!-- Sidebar navigation -->
+  <nav>
+    <div class="admin-div">
+      <p>Admin Panel</p>
+      <img class="admin-pic" src="https://annemariesegal.com/wp-content/uploads/2017/04/adobestock_86346713-cropped-young-woman-in-suit.jpg?w=640">
+    </div>
+    <ul class="tables-div">
+      <li><a href="main">Chapters</a></li>
+      <li><a href="members">Members</a></li>
+      <li><a href="donations">Donations</a></li>
+      <li><a href="events">Events</a></li>
+    </ul>
+  </nav>
+</aside>
+
+<main>
+  <!-- Main content section -->
+  <header>
+    <h1>Chapter Table</h1>
+    <!-- Sorting Dropdown that submits on change -->
+    <form action="/main" method="get">
+      <h4>Sort by:</h4>   
+        <select name="sort_by" onchange="this.form.submit()">
+            <option value="chaptername-asc">Name Ascending</option>
+            <option value="chaptername-desc">Name Descending</option>
+            <option value="numberofmembers-asc">Members Ascending</option>
+            <option value="numberofmembers-desc">Members Descending</option>
+        </select>
+    </form>
+</header>
+
+
+
+
+
+
+  <section>
+    <!-- Table data -->
+    <table>
+      <thead>
+        <tr>
+          <th>Chapter Name</th>
+          <th>Number of Members</th>
+          <th>Chapter Lead</th>
+          <th>Chapter Email</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for chapter in chapters %}
+        <tr>
+          <td>{{ chapter.chaptername }}</td>  <!-- Make sure the variable matches the model case -->
+          <td>{{ chapter.numberofmembers }}</td>
+          <td>{{ chapter.chapterlead }}</td>
+          <td>{{ chapter.chapteremail }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+</main>
+
+<script>
+  function sortTable() {
+      var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+      table = document.getElementById("chapterTable");
+      switching = true;
+      // Determine sort direction from dropdown
+      var sortOption = document.getElementById("sortOptions").value.split("-");
+      var sortField = sortOption[0]; // 'name' or 'members'
+      var sortOrder = sortOption[1]; // 'asc' or 'desc'
+      while (switching) {
+          switching = false;
+          rows = table.getElementsByTagName("TR");
+          for (i = 1; i < (rows.length - 1); i++) {
+              shouldSwitch = false;
+              x = rows[i].getElementsByTagName("TD")[sortField === 'name' ? 0 : 1];
+              y = rows[i + 1].getElementsByTagName("TD")[sortField === 'name' ? 0 : 1];
+              if (sortOrder === 'asc' && x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                  shouldSwitch = true;
+              } else if (sortOrder === 'desc' && x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                  shouldSwitch = true;
+              }
+              if (shouldSwitch) {
+                  rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                  switching = true;
+                  break;
+              }
+          }
+      }
+  }
+  </script>
+  
+
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donations Table</title>
+    <link rel="stylesheet" href="../static/main.css">
+</head>
+<body>
+
+<aside>
+    <!-- Sidebar navigation -->
+    <nav>
+        <div class="admin-div">
+            <p>Admin Panel</p>
+            <img class="admin-pic" src="https://annemariesegal.com/wp-content/uploads/2017/04/adobestock_86346713-cropped-young-woman-in-suit.jpg?w=640">
+        </div>
+        <ul class="tables-div">
+            <li><a href="main">Chapters</a></li>
+            <li><a href="members">Members</a></li>
+            <li><a href="donations">Donations</a></li>
+            <li><a href="events">Events</a></li>
+        </ul>
+    </nav>
+</aside>
+
+<main>
+    <section>
+        <header>
+            <h2>Donations</h2>
+            <button id="addDonationBtn">Add Donation</button>
+        </header>
+        <table id="donationsTable">
+            <thead>
+                <tr>
+                    <th>Donation ID</th>
+                    <th>Donor ID</th>
+                    <th>Item</th>
+                    <th>Monetary Worth</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for donation in donations %}
+                <tr id="donation-{{ donation.id }}">
+                    <td>{{ donation.donor_id }}</td>
+                    <td>{{ donation.donation_id }}</td>
+                    <td>{{ donation.item }}</td>
+                    <td>${{ donation.monetaryWorth }}</td>
+                    <td><button type="button" onclick="openUpdateModal('{{ donation.id }}', '{{ donation.donor }}', '{{ donation.item }}', '{{ donation.monetaryWorth }}')">View/Update</button></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <!-- The Modal for adding donation -->
+        <div id="addDonationModal" class="modal" style="display:none;">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Add Donation</h2>
+                <form id="addDonationForm">
+                    <label for="donor_id">Donor ID:</label>
+                    <input type="number" id="donor_id" name="donor_id" required><br>
+                    <label for="item">Item:</label>
+                    <input type="text" id="item" name="item" required><br>
+                    <label for="monetaryWorth">Monetary Worth:</label>
+                    <input type="number" id="monetaryWorth" name="monetaryWorth" required><br>
+                    <input type="submit" value="Add Donation">
+                </form>
+            </div>
+        </div>
+
+        <!-- Update Modal -->
+        <div id="updateDonationModal" class="modal" style="display:none;">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <span class="close" onclick="document.getElementById('updateDonationModal').style.display = 'none'">&times;</span>
+                <h2>Update Donation</h2>
+                <form id="updateDonationForm">
+                    <input type="hidden" id="update_donation_id" name="donation_id">
+                    <label for="update_donor_id">Donor ID:</label>
+                    <input type="number" id="update_donor_id" name="donor_id" required><br>
+                    <label for="update_item">Item:</label>
+                    <input type="text" id="update_item" name="item" required><br>
+                    <label for="update_monetaryWorth">Monetary Worth:</label>
+                    <input type="number" id="update_monetaryWorth" name="monetaryWorth" required><br>
+                    <input type="submit" value="Update Donation">
+                </form>
+            </div>
+        </div>
+    </section>
+</main>
+
+<script>
+// Modal open and close handlers for add
+document.getElementById('addDonationBtn').addEventListener('click', function() {
+    document.getElementById('addDonationModal').style.display = 'block';
+});
+
+// Close modal functionality shared between modals
+document.querySelectorAll('.close').forEach(function(element) {
+    element.addEventListener('click', function() {
+        this.parentElement.parentElement.style.display = 'none';
+    });
+});
+
+// Handle form submission for adding donations
+document.getElementById('addDonationForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var formData = new FormData(this);
+
+    fetch('/add_donation', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+        document.getElementById('addDonationModal').style.display = 'none';
+        var table = document.getElementById('donationsTable').getElementsByTagName('tbody')[0];
+        var newRow = table.insertRow();
+        newRow.innerHTML = `<td>${data.donor_id}</td><td>${data.item}</td><td>$${data.monetaryWorth}</td><td><button type='button' onclick='openUpdateModal("${data.id}", "${data.donor_id}", "${data.item}", "${data.monetaryWorth}")'>View/Update</button></td>`;
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+});
+
+// Function to open update modal and populate with data
+function openUpdateModal(donationId, donorId, item, monetaryWorth) {
+    document.getElementById('update_donation_id').value = donationId;
+    document.getElementById('update_donor_id').value = donorId;
+    document.getElementById('update_item').value = item;
+    document.getElementById('update_monetaryWorth').value = monetaryWorth;
+    document.getElementById('updateDonationModal').style.display = 'block';
+}
+
+// Handle form submission for updating donations
+document.getElementById('updateDonationForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var formData = new FormData(this);
+
+    fetch('/update_donation', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Update successful:', data);
+        document.getElementById('updateDonationModal').style.display = 'none';
+        location.reload(); // Refresh to see the changes, or manually update the table row
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+});
+
+// Close modals when clicking outside
+window.onclick = function(event) {
+    if (event.target.classList.contains('modal')) {
+        event.target.style.display = 'none';
+    }
+}
+</script>
+</body>
+</html>
