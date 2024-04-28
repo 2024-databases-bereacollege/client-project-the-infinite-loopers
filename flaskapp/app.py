@@ -13,8 +13,10 @@ from flask import Flask, render_template, request
 from peewee import IntegrityError
 from models import mydb, chapter, member, event, donation
 from flask_wtf import CSRFProtect
-from flask import redirect
-from flask import url_for
+from flask import Flask, render_template, redirect, request, url_for
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user
+
 
 
 # from logic import *
@@ -31,7 +33,42 @@ def after_request(response):
     return response
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@db/data'
+app.config['SECRET_KEY'] = 'your_secret_key'
 
+db = SQLAlchemy(app)
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
+
+class User(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(100), unique=True)
+    password = db.Column(db.String(100))
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']  # In a real app, use hashed passwords
+        user = User.query.filter_by(username=username).first()
+        if user and user.password == password:  # This should be a hashed password check in a real app
+            login_user(user)
+            return redirect(url_for('main_page'))
+        else:
+            return '<h1>Invalid username or password</h1>'
+    return render_template('login.html')
+
+@app.route('/main_page')
+@login_required
+def main_page():
+    return render_template('main.html')
+
+if __name__ == '__main__':
+    app.run(debug=True)
 
 @app.route('/')
 def admin_panel():
@@ -47,7 +84,7 @@ def members():
 @app.route('/main')
 @app.route('/main')
 @app.route('/main')
-def main_page():
+def main_chapter_page():
     # Get the sort parameter or use a default value
     sort_by = request.args.get('sort_by', 'chaptername-asc')
     # Use a try-except block to handle the possibility of unpacking failure
@@ -315,4 +352,4 @@ whatever the login/authentication system has stored in the session.
 # def load_user():
 #     g.user = Student.get_by_id(2)
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5001)
+    app.run(host='0.0.0.0', port=5002)
