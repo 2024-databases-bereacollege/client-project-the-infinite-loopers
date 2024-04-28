@@ -94,7 +94,7 @@ def update_chapter():
         chapter_instance.chapterlead = request.form['chapter_lead']
         chapter_instance.chapteremail = request.form['chapter_email']
         chapter_instance.save()
-        return redirect(url_for('main_page'))  # Redirect to the main page or wherever appropriate
+        return jsonify({'message': 'Chapter updated successfully'}), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
@@ -118,9 +118,23 @@ def events():
    
 @app.route('/donations')
 def donations():
-    donations_query = donation.select().join(member)
-    print(donations_query)
-    return render_template("donations.html", donations=donations_query)
+    sort_by = request.args.get('sort_by', 'donation_id-asc')
+    field, order = sort_by.split('-')
+    query = donation.select()
+
+    if field == 'monetaryWorth':
+        if order == 'asc':
+            query = query.order_by(donation.monetaryWorth.asc())
+        else:
+            query = query.order_by(donation.monetaryWorth.desc())
+    else:  # Default to sort by donation_id
+        if order == 'asc':
+            query = query.order_by(donation.donationId.asc())
+        else:
+            query = query.order_by(donation.donationId.desc())
+
+    donations_data = query.join(member).execute()
+    return render_template("donations.html", donations=donations_data)
 
 
 

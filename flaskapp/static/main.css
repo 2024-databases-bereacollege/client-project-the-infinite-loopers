@@ -76,27 +76,29 @@ header {
 
 table {
   width: 100%;
-  border-collapse: collapse; /* Ensures borders between cells are merged */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  border-collapse: separate;
+  border-spacing: 0 10px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 table thead {
-  background-color: #e1e5ee; /* Light header background */
+  background-color: #e1e5ee;
 }
 
 table th, table td {
   text-align: left;
   padding: 12px 15px;
-  color: #333; /* Darker text for better readability */
+  color: #333;
 }
 
 table th {
-  color: #5b5e6d; /* Even darker color for headers */
+  color: #5b5e6d; /* Darker text for headers */
 }
 
-table tr:nth-child(even) {
-  background-color: #f9fafc; /* Zebra striping for rows */
-}
+/* table tr:nth-child(even) {
+  background-color: #f9fafc;
+} */
 
 /* Link Styles */
 .link-button {
@@ -113,18 +115,20 @@ table tr:nth-child(even) {
 }
 
 /* Modal Styles */
-.modal-content {
-  width: auto;
-  height: auto;
-  padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  margin-top: 100px; /* Center the modal vertically */
-  background-color: #fefefe; /* White background for modal content */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4);
 }
 
 
-.modal {
+/* .modal {
   display: none; 
   position: fixed; 
   z-index: 1; 
@@ -134,12 +138,125 @@ table tr:nth-child(even) {
   height: 100%; 
   overflow: auto; 
   background-color: rgba(0,0,0,0.4);
-}
+} */
 
 .modal-content {
   background-color: #fefefe;
-  margin: 10% auto; 
+  margin: 10% auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 80%; 
+  width: 80%;
+}
+
+.btn {
+  font-size: 0.875rem;
+  padding: 5px 10px;
+  border-radius: 4px;
+  color: #fff;
+  background-color: #6c757d; /* Bootstrap secondary button color */
+  border: none;
+  cursor: pointer;
+}
+
+.btn-secondary {
+  background-color: #6c757d; /* Grey for secondary buttons, matching Bootstrap's theme */
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268; /* Darker grey on hover */
+}
+
+.chapter_dropdown {
+  width: 1000px;
+}
+
+/* Styling for the header and its content */
+header {
+  display: flex;
+  flex-direction: column; /* Align items in a column */
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.sort-wrapper {
+  margin-top: 10px; /* Add some space above the sort form */
+}
+
+.sort-form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.form-select {
+  padding: 0.5rem 1rem; /* Add padding for better touch */
+  border-radius: 0.25rem; /* Rounded borders */
+  border: 1px solid #ddd; /* Subtle border */
+  background-color: #fff; /* White background */
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.075); /* Inner shadow for depth */
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out; /* Smooth transition for focus */
+}
+
+.form-select:focus {
+  border-color: #80bdff; /* Focus color similar to Bootstrap's blue */
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25); /* Focus shadow */
+}
+
+/* Ensure that the modal content is centered and looks clean */
+.modal-content {
+  width: 50%; /* Smaller width for a more focused content area */
+  margin: 5% auto; /* Increase top margin */
+  padding: 2rem; /* More padding for better spacing */
+  border-radius: 0.3rem; /* Rounded corners */
+  background-color: #fefefe; /* White background */
+  border: 1px solid #ccc; /* Light gray border */
+}
+
+.btn {
+  font-size: 0.875rem;
+  padding: 6px 12px; /* Slightly larger padding */
+  border-radius: 0.25rem; /* Consistent border radius with other elements */
+  color: #fff;
+  background-color: #007bff; /* Bootstrap primary button color */
+  border: none;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: #0056b3; /* Darker on hover */
+}
+
+header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Align items to the left */
+  width: 100%; /* Ensure the header takes full available width */
+  padding: 20px; /* Add padding for visual spacing */
+}
+
+.sort-wrapper {
+  width: 100%; /* Full width for the sort wrapper */
+}
+
+.sort-form {
+  display: block; /* Make form block to take full width */
+  width: 100%;
+}
+
+.form-select {
+  width: 100%; /* Make select take full available width */
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.075);
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-select:focus {
+  border-color: #80bdff;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
 }
