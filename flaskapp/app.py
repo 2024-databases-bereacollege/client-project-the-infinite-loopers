@@ -15,11 +15,36 @@ from models import mydb, chapter, member, event, donation
 from flask_wtf import CSRFProtect
 from flask import redirect
 from flask import url_for
+from flask import flash
+from flask_login import login_user, logout_user, current_user
+from flask_login import login_required
+from models import User
+from flask_login import UserMixin
+
+
+
+
+
+from flask_login import LoginManager
+login_manager = LoginManager()
+
+
 
 
 # from logic import *
 
 app = Flask(__name__)
+
+app.config['ADMIN_USERNAME'] = 'kftc'
+app.config['ADMIN_PASSWORD'] = 'kftc123'
+app.secret_key = 'kftc123'
+
+
+login_manager.init_app(app)
+login_manager.login_view = 'login'  # The name of the login view
+
+
+
 
 @app.before_request
 def before_request():
@@ -32,7 +57,40 @@ def after_request(response):
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@db/data'
 
+@login_manager.user_loader
+def load_user(user_id):
+    if user_id == '1':
+        return User()
+    return None
 
+
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        if username == app.config['ADMIN_USERNAME'] and password == app.config['ADMIN_PASSWORD']:
+            user = User()  # Correctly create a user instance
+            login_user(user)
+            flash('Login successful.')
+            return redirect(url_for('main_page'))  # Redirect to the admin panel
+        else:
+            redirect("/login")
+    return render_template("index.html")
+
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect('/')
+
+@app.route('/warning')
+def warning():
+    return render_template("warning.html")
+
+@login_required
 @app.route('/')
 def admin_panel():
     # courses = Course.select()
@@ -40,14 +98,18 @@ def admin_panel():
 
 @app.route('/members')
 def members():
+    if not current_user.is_authenticated:
+        return redirect(url_for('warning'))
     members_query = member.select()
     members_list = [member_to_dict(m) for m in members_query]  # Convert each member to a dict
     return render_template("members.html", members=members_list)
 
-@app.route('/main')
-@app.route('/main')
+
+@login_required
 @app.route('/main')
 def main_page():
+    if not current_user.is_authenticated:
+        return redirect(url_for('warning'))
     # Get the sort parameter or use a default value
     sort_by = request.args.get('sort_by', 'chaptername-asc')
     # Use a try-except block to handle the possibility of unpacking failure
@@ -83,9 +145,12 @@ def main_page():
 
     return render_template("main.html", chapters=chapters)
 
-
+@login_required
 @app.route('/update_chapter', methods=['POST'])
+@login_required
 def update_chapter():
+    if not current_user.is_authenticated:
+        return redirect(url_for('warning'))
     chapter_id = request.form['chapter_id']
     try:
         chapter_instance = chapter.get_by_id(chapter_id)
@@ -98,9 +163,12 @@ def update_chapter():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-
+@login_required
 @app.route('/events')
+@login_required
 def events():
+    if not current_user.is_authenticated:
+        return redirect(url_for('warning'))
     events_query = event.select()  # Or your ORM's equivalent query
     event_data = [
         {
@@ -115,9 +183,11 @@ def events():
     return render_template("events.html", events=event_data)
 
 
-   
+@login_required
 @app.route('/donations')
 def donations():
+    if not current_user.is_authenticated:
+        return redirect(url_for('warning'))
     sort_by = request.args.get('sort_by', 'donation_id-asc')
     field, order = sort_by.split('-')
     query = donation.select()
@@ -137,9 +207,11 @@ def donations():
     return render_template("donations.html", donations=donations_data)
 
 
-
+@login_required
 @app.route('/add_member', methods=['POST'])
 def add_member():
+    if not current_user.is_authenticated:
+        return redirect(url_for('warning'))
     try:
         # Assuming you are sending these fields in the request
         first_name = request.form['first_name']
@@ -172,9 +244,11 @@ def add_member():
         return jsonify({'error': str(e)}), 500
 
 
-    
+@login_required  
 @app.route('/add_event', methods=['POST'])
 def add_event():
+    if not current_user.is_authenticated:
+        return redirect(url_for('warning'))
     try:
         new_event = event.create(
             eventname=request.form['event_name'],
@@ -190,9 +264,11 @@ def add_event():
         return "An error occurred", 500
     
 
-
+@login_required
 @app.route('/add_donation', methods=['POST'])
 def add_donation():
+    if not current_user.is_authenticated:
+        return redirect(url_for('warning'))
     try:
         donor_id = request.form['donor_id']
         item = request.form['item']
@@ -212,8 +288,11 @@ def add_donation():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+@login_required
 @app.route('/update_donation', methods=['POST'])
 def update_donation():
+    if not current_user.is_authenticated:
+        return redirect(url_for('warning'))
     try:
         donation_id = request.form['donation_id']
         donor_id = request.form['donor_id']
@@ -234,9 +313,12 @@ def update_donation():
         })
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-
+    
+@login_required
 @app.route('/update_event', methods=['POST'])
 def update_event():
+    if not current_user.is_authenticated:
+        return redirect(url_for('warning'))
     try:
         event_id = request.form['event_id']  # Use a hidden input in your form to send the event's ID
         venue = request.form['venue']
@@ -265,9 +347,11 @@ def update_event():
         return jsonify({'error': str(e)}), 500
 
 
-
+@login_required
 @app.route('/update_member', methods=['POST'])
 def update_member():
+    if not current_user.is_authenticated:
+        return redirect(url_for('warning'))
     member_id = request.form['member_id']
     try:
         # Use a different variable name for the member instance
@@ -300,8 +384,11 @@ def member_to_dict(member):
     }
 
 
+@login_required
 @app.route('/delete_member/<int:member_id>', methods=['DELETE'])
 def delete_member(member_id):
+    if not current_user.is_authenticated:
+        return redirect(url_for('warning'))
     try:
         member = member.get(member.memberid == member_id)
         member.delete_instance()

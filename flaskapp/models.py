@@ -1,5 +1,7 @@
 from peewee import *
 from datetime import datetime
+from peewee import Model, CharField
+from flask_login import UserMixin
 
 # Database Configuration
 ################################
@@ -11,6 +13,18 @@ class baseModel(Model):
 
 # Class Definitionsa
 # https://docs.peewee-orm.com/en/latest/peewee/models.html
+
+
+class User(UserMixin):
+    # Assuming a single user
+    id = 1
+
+    def get_id(self):
+        return str(self.id)
+
+
+
+
 class member(baseModel):
     memberid = PrimaryKeyField()
     firstname = CharField(100)
