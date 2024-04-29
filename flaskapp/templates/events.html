@@ -7,6 +7,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel - Event Table</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
     <link rel="stylesheet" href="../static/events.css"> 
     <!-- Link to your CSS files here -->
 </head>
@@ -24,6 +26,8 @@
                 <li><a href="/donations">Donations</a></li>
                 <li><a href="/events">Events</a></li>
                 <!-- Logout link -->
+            </ul>
+            <ul class="ul_second">
                 <li><a href="/logout" class="btn btn-danger" style="color: white;">Logout</a></li>
             </ul>
         </nav>
@@ -36,8 +40,8 @@
 
         <section>
             <div class="events-div">
-            <h2>Event Table</h2> <!-- Use appropriate heading level -->
-            <button id="addEventBtn">Add New Event</button>
+            <h2 style="color: white">Event Table</h2> <!-- Use appropriate heading level -->
+            <button class="btn btn-primary" id="addEventBtn">Add New Event</button>
         </div>
             <table class="table">
                 <thead>
@@ -61,7 +65,7 @@
     <td>{{ event['theme'] }}</td>
     <td>{{ event['attendance'] }}</td>
     <td>
-        <button data-event='{{ event|tojson|safe }}' onclick="openEditEventModal(this)">Edit</button>
+        <button class="btn btn-secondary" data-event='{{ event|tojson|safe }}' onclick="openEditEventModal(this)">Edit</button>
     </td>
     <!-- <td><button>Edit</button></td> -->
 </tr>

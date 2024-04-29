@@ -16,6 +16,7 @@ body
   background-image: url("https://mobilize-uploads-prod.s3.amazonaws.com/uploads/event/KFTC-Logo-Bright_20221014124216247517.png");
   background-repeat: no-repeat;
   background-position: center;
+  overflow: hidden; 
 
 
 }
