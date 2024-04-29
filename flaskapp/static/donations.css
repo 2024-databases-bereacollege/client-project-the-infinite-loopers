@@ -15,15 +15,22 @@ body {
 
 aside {
   width: 200px;
-  background-color: #333; /* Dark background for better visibility */
+  float: left;
+  border-right: 1px solid #ccc;
   height: 100vh;
-  border-right: 1px solid #ddd;
+  background-color: #333; 
+  color: white;
+  display: flex;
+  font-weight: bold;
+  justify-content: center;
 }
+
 
 aside nav ul li a {
   color: white;
   padding: 10px;
   display: block;
+  font-weight: bold;
   text-decoration: none;
   border-bottom: 1px solid #ccc;
 }
