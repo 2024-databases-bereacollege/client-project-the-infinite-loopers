@@ -44,11 +44,11 @@
 
 INSERT INTO member (Score, phoneNumber, firstName, middleName, lastName, memberAddress, NumberOfEventsAttended, status)
 VALUES
-    (987, 1234567890, 'Betty', 'M', 'Hibler', '314 Prospect St, Berea, KY, 40403',  5, 'active'),
-    (654, 2345678901, 'Landra', '', 'Lewis', '619 Chestnut St, Berea, KY, 40403', 3, 'active'),
-    (321, 3456789012, 'Travis', '', 'Bolinger', '314 University Dr Apt A, Richmond, KY, 2841',  2, 'active'),
-    (432, 4567890123, 'Rachel', '',  'White', '1101 Elm St, Danville, KY, 40422', 7, 'active'),
-    (876, 5678901234, 'Joanie', '', 'Lukins', '503 Ohara Dr, Daville, KY, 40422', 4, 'active');   
+    (50, 1234567890, 'Betty', 'M', 'Hibler', '314 Prospect St, Berea, KY, 40403',  5, 'active'),
+    (30, 2345678901, 'Landra', '', 'Lewis', '619 Chestnut St, Berea, KY, 40403', 3, 'active'),
+    (20, 3456789012, 'Travis', '', 'Bolinger', '314 University Dr Apt A, Richmond, KY, 2841',  2, 'active'),
+    (70, 4567890123, 'Rachel', '',  'White', '1101 Elm St, Danville, KY, 40422', 7, 'active'),
+    (40, 5678901234, 'Joanie', '', 'Lukins', '503 Ohara Dr, Daville, KY, 40422', 4, 'active');   
 
 INSERT INTO chapter (chapterName, numberofMembers, chapterLead, chapterEmail)
 VALUES
@@ -71,3 +71,5 @@ VALUES
     ('Hackathon', 'Convention Center', 'Environmental Preservation', '2024-04-01', 200),
     ('Seedy Workshop', 'Community Center', 'Environmental Preservation', '2024-04-15', 80),
     ('How to sleep in class', 'Community Center', 'Sleep', '2024-04-15', 80);
+
+-- UPDATE member SET score = NumberOfEventsAttended * 10;

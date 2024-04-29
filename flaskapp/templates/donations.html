@@ -53,7 +53,6 @@
         <table class="table" id="donationsTable">
             <thead>
                 <tr>
-                    <th>Donation ID</th>
                     <th>Donor ID</th>
                     <th>Item</th>
                     <th>Monetary Worth</th>
@@ -64,7 +63,6 @@
                 {% for donation in donations %}
                 <tr id="donation-{{ donation.id }}">
                     <td>{{ donation.donor_id }}</td>
-                    <td>{{ donation.donation_id }}</td>
                     <td>{{ donation.item }}</td>
                     <td>${{ donation.monetaryWorth }}</td>
                     <td><button type="button" onclick="openUpdateModal('{{ donation.id }}', '{{ donation.donor }}', '{{ donation.item }}', '{{ donation.monetaryWorth }}')">Edit</button></td>
@@ -140,25 +138,35 @@ document.getElementById('addDonationForm').addEventListener('submit', function(e
     })
     .then(response => response.json())
     .then(data => {
-        console.log('Success:', data);
-        document.getElementById('addDonationModal').style.display = 'none';
-        var table = document.getElementById('donationsTable').getElementsByTagName('tbody')[0];
-        var newRow = table.insertRow();
-        newRow.innerHTML = `<td>${data.donor_id}</td><td>${data.item}</td><td>$${data.monetaryWorth}</td><td><button type='button' onclick='openUpdateModal("${data.id}", "${data.donor_id}", "${data.item}", "${data.monetaryWorth}")'>View/Update</button></td>`;
-    })
+    console.log('Success:', data);
+    document.getElementById('addDonationModal').style.display = 'none';
+    var table = document.getElementById('donationsTable').getElementsByTagName('tbody')[0];
+    var newRow = table.insertRow(-1); // Inserts at the end of the table
+    newRow.innerHTML = `
+        <td>${data.donor_id}</td>
+        <td>${data.item}</td>
+        <td>$${data.monetaryWorth}</td>
+        <td><button type='button' class='btn btn-secondary' onclick='openUpdateModal("${data.id}", "${data.donor_id}", "${data.item}", "${data.monetaryWorth}")'>Edit</button></td>
+    `;
+})
+
     .catch((error) => {
         console.error('Error:', error);
     });
 });
 
+
+
 // Function to open update modal and populate with data
 function openUpdateModal(donationId, donorId, item, monetaryWorth) {
+    console.log(donationId, donorId, item, monetaryWorth); // Check if data is correct
     document.getElementById('update_donation_id').value = donationId;
     document.getElementById('update_donor_id').value = donorId;
     document.getElementById('update_item').value = item;
     document.getElementById('update_monetaryWorth').value = monetaryWorth;
     document.getElementById('updateDonationModal').style.display = 'block';
 }
+
 
 // Handle form submission for updating donations
 document.getElementById('updateDonationForm').addEventListener('submit', function(e) {
@@ -173,12 +181,25 @@ document.getElementById('updateDonationForm').addEventListener('submit', functio
     .then(data => {
         console.log('Update successful:', data);
         document.getElementById('updateDonationModal').style.display = 'none';
-        location.reload(); // Refresh to see the changes, or manually update the table row
+        // Ideally, here you should update the DOM to reflect the changes.
+        updateTableRow(data);
     })
     .catch(error => {
         console.error('Error:', error);
     });
 });
+
+function updateTableRow(data) {
+    const row = document.querySelector(`#donation-${data.id}`);
+    if (row) {
+        row.cells[1].textContent = data.donor_id; // Adjust according to the actual index
+        row.cells[2].textContent = data.item;
+        row.cells[3].textContent = `$${data.monetaryWorth}`;
+    }
+}
+
+
+
 
 // Close modals when clicking outside
 window.onclick = function(event) {

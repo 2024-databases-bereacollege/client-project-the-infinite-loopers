@@ -213,17 +213,17 @@ def add_member():
     if not current_user.is_authenticated:
         return redirect(url_for('warning'))
     try:
-        # Assuming you are sending these fields in the request
         first_name = request.form['first_name']
-        middle_name = request.form.get('middle_name', '')  # Use .get for optional fields
+        middle_name = request.form.get('middle_name', '')
         last_name = request.form['last_name']
         phone_number = request.form['phone_number']
-        score = request.form['score']
         address = request.form['address']
-        number_of_events_attended = request.form['number_of_events_attended']
-        status = request.form['status'] 
+        number_of_events_attended = int(request.form['number_of_events_attended'])
+        status = request.form['status']
 
-        # Create new member instance and save to the database
+        # Calculate the score based on the number of events attended
+        score = number_of_events_attended * 10
+
         new_member = member.create(
             firstname=first_name,
             middlename=middle_name,
@@ -232,14 +232,12 @@ def add_member():
             score=score,
             memberaddress=address,
             numberofeventsattended=number_of_events_attended,
-            status = status
+            status=status
         )
-        status = 'active'
         new_member.save()
         return redirect(url_for('members'))
 
     except Exception as e:
-        # If an error occurs, log it and send a 500 error response
         print(f"Error: {e}")
         return jsonify({'error': str(e)}), 500
 
@@ -291,29 +289,24 @@ def add_donation():
 @login_required
 @app.route('/update_donation', methods=['POST'])
 def update_donation():
-    if not current_user.is_authenticated:
-        return redirect(url_for('warning'))
     try:
         donation_id = request.form['donation_id']
         donor_id = request.form['donor_id']
         item = request.form['item']
         monetaryWorth = request.form['monetaryWorth']
 
-        donation_instance = donation.get_by_id(donation_id)
-        donation_instance.donor = donor_id
+        donation_instance = Donation.get_by_id(donation_id)
+        donation_instance.donor = donor_id  # Assuming `donor` is the correct field name
         donation_instance.item = item
         donation_instance.monetaryWorth = monetaryWorth
         donation_instance.save()
 
-        return jsonify({
-            'id': donation_id,
-            'donor_id': donor_id,
-            'item': item,
-            'monetaryWorth': monetaryWorth
-        })
+        return jsonify({'message': 'Update successful', 'id': donation_id}), 200
     except Exception as e:
+        print(e)
         return jsonify({'error': str(e)}), 500
-    
+
+
 @login_required
 @app.route('/update_event', methods=['POST'])
 def update_event():
@@ -354,17 +347,19 @@ def update_member():
         return redirect(url_for('warning'))
     member_id = request.form['member_id']
     try:
-        # Use a different variable name for the member instance
-        member_instance = member.get_by_id(member_id)  # Assuming 'Member' is your model class name
+        member_instance = member.get_by_id(member_id)
         member_instance.firstname = request.form['first_name']
         member_instance.middlename = request.form['middle_name']
         member_instance.lastname = request.form['last_name']
         member_instance.phonenumber = request.form['phone_number']
-        member_instance.score = request.form['score']
         member_instance.memberaddress = request.form['address']
-        member_instance.numberofeventsattended = request.form['number_of_events_attended']
+        member_instance.numberofeventsattended = int(request.form['number_of_events_attended'])
+
+        # Recalculate the score
+        member_instance.score = member_instance.numberofeventsattended * 10
+
         member_instance.save()
-        return jsonify({'message': 'Member updated successfully'})
+        return redirect(url_for("members"))
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 

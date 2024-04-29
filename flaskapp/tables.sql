@@ -11,6 +11,8 @@ CREATE TABLE member (
     status varchar(15)
 );
 
+UPDATE member SET score = NumberOfEventsAttended * 10;
+
 
 CREATE TABLE chapter (
     chapterName varchar(100) PRIMARY KEY,

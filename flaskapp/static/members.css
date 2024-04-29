@@ -145,6 +145,12 @@ input[type="search"] {
   margin-top: 10px;
 }
 
+.modal {
+  width: 800px;
+  float: center;
+  
+}
+
 .modal-content {
   width: auto;
   height: auto;
