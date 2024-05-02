@@ -33,8 +33,10 @@ To run the application, you need to:
    ```sh
    git clone https://github.com/client-project-the-infinite-loopers
    ```
-2. Drop the beewee tables
-   ``` ./reset.from.peewee.sh ```
+2. Drop the Peewee tables
+   ```
+   ./reset.from.peewee.sh
+   ```
 4. Run the application 
    ```
    flask run
