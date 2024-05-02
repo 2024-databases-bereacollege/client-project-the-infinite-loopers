@@ -1,12 +1,12 @@
 # Kentuckians for the Commonwealth
 
-### Authors: Mostaphe Mohamud, Ali Ramazani, Sotaire Kwizera, Seedy Jahateh 
-
 ## About The Project
+
+Authors: Mostaphe Mohamud, Ali Ramazani, Sotaire Kwizera, Seedy Jahateh 
 
 This database management system was developed by a group of student developers as part of the Database Systems class at Berea College for the Kentuckians for the Commonwealth organization. While significant work has been done with the application, there is still room for improvement, and this file will serve as a guide for anyone who wants to take it on.
 
-### Built With
+## Built With
 
 Here are the technologies and frameworks used to build this application. You might want to familiarize them with yourself before he
 
@@ -21,11 +21,11 @@ Here are the technologies and frameworks used to build this application. You mig
 
 This is the repository of another 
 
-### Prerequisites
+## Prerequisites
 
 If you are running the application on Jupyter Notebook then you do not need to install anything, but if you need to clone your own repository  
 
-### Installation
+## Installation
 
 To run the application, you need to:
 
