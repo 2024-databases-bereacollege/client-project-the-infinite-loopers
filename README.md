@@ -4,7 +4,7 @@
 
 ## About The Project
 
-This database management system was developed by a group of student developers as part of the Database Systems class at Berea College for the Kentuckians for the Commonwealth organization. W
+This database management system was developed by a group of student developers as part of the Database Systems class at Berea College for the Kentuckians for the Commonwealth organization. While a signifant work has been done with the application there is still room for improvement and this file will serve as a guidance for anyone who wants to takes it on.
 
 ### Built With
 
@@ -19,8 +19,7 @@ Here are the technologies and frameworks used to build this application. You mig
 
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+This is the repository of another 
 
 ### Prerequisites
 
@@ -28,48 +27,30 @@ If you are running the application on Jupyter Notebook then you do not need to i
 
 ### Installation
 
-To run the application. You need 
+To run the application, you need to:
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+1. Clone the repo
    ```sh
-   git clone https://github.com/your_username_/Project-Name.git
+   git clone https://github.com/client-project-the-infinite-loopers
    ```
-3. Install NPM packages
-   ```sh
-   npm install
+2. Drop the beewee tables
+   ``` ./reset.from.peewee.sh ```
+4. Run the application 
    ```
-4. Enter your API in `config.js`
-
-## Usage
-
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
+   flask run
+   ```
+5. Open it on the browser and Login using the login credentials. Reach out for the Login credentials!
 
 
 ## Roadmap - Future Improvements 
 
 - [x] Add delete button to both members and events page
 - [x] Add search functionality to donations, members, and events table 
-- 
-
-See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a full list of proposed features (and known issues).
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 ## License
 
-Distributed under the MIT License. See `LICENSE.txt` for more information.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
+This work is the work of Berea College students who are mentioned above. Please keep them informed whenever you are wanting to work on the applicaion.  
 
 
 ## Contact
