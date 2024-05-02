@@ -4,7 +4,7 @@
 
 ## About The Project
 
-This database management system was developed by a group of student developers as part of the Database Systems class at Berea College for the Kentuckians for the Commonwealth organization. While a signifant work has been done with the application there is still room for improvement and this file will serve as a guidance for anyone who wants to takes it on.
+This database management system was developed by a group of student developers as part of the Database Systems class at Berea College for the Kentuckians for the Commonwealth organization. While significant work has been done with the application, there is still room for improvement, and this file will serve as a guide for anyone who wants to take it on.
 
 ### Built With
 
@@ -41,7 +41,7 @@ To run the application, you need to:
    ```
    flask run
    ```
-5. Open it on the browser and Login using the login credentials. Reach out for the Login credentials!
+5. Open it on the browser and log in using the login credentials. Reach out for the Login credentials!
 
 
 ## Roadmap - Future Improvements 
@@ -52,7 +52,7 @@ To run the application, you need to:
 
 ## License
 
-This work is the work of Berea College students who are mentioned above. Please keep them informed whenever you are wanting to work on the applicaion.  
+This work is the work of Berea College students who are mentioned above. Please keep them informed whenever you want to work on the application.  
 
 
 ## Contact
@@ -61,7 +61,6 @@ Your Name - Mostaphe Mohamud (mohamudm@berea.edu)
 
 ## Acknowledgments
 
-We 
-
+We are grateful for the support of our instructors, Dr. Jasmine Jones and Brian Ramsay, for constantly supporting us throughout this project.
 
 
